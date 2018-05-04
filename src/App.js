@@ -10,28 +10,63 @@ let fakeServerData ={
     playlists: [
       {
         name: 'Playlist-1',
-        songs: ['Sypmhony of Destruction', 'Tornado of Souls', 'Holy wars', 'Whisky in The Jar']
+        songs: [
+        {name:'Sypmhony of Destruction', duration: 1345},
+        {name:'Tornado of Souls', duration: 1200},
+        {name:'Holy wars',duration: 2500},
+        {name:'Whisky in The Jar', duration: 1234}
+        ]
       },
       {
         name: 'Playlist-2',
-        songs: ['Sypmhony of Destruction', 'Tornado of Souls', 'Holy wars', 'Whisky in The Jar']
+         songs: [
+        {name:'Sypmhony of Destruction', duration: 1345},
+        {name:'Tornado of Souls', duration: 1200},
+        {name:'Holy wars',duration: 2500},
+        {name:'Whisky in The Jar', duration: 1234}
+        ]
       },
       {
         name: 'Playlist-3',
-        songs: ['Sypmhony of Destruction', 'Tornado of Souls', 'Holy wars', 'Whisky in The Jar']
+         songs: [
+        {name:'Sypmhony of Destruction', duration: 1345},
+        {name:'Tornado of Souls', duration: 1200},
+        {name:'Holy wars',duration: 2500},
+        {name:'Whisky in The Jar', duration: 1234}
+        ]
       },
       {
         name: 'Playlist-4',
-        songs: ['Sypmhony of Destruction', 'Tornado of Souls', 'Holy wars', 'Whisky in The Jar']
+         songs: [
+        {name:'Sypmhony of Destruction', duration: 1345},
+        {name:'Tornado of Souls', duration: 1200},
+        {name:'Holy wars',duration: 2500},
+        {name:'Whisky in The Jar', duration: 1234}
+        ]
       }
     ]
   }
 }
-class Aggregate extends Component {
+class PlaylistCounter extends Component {
   render(){
       return (
         <div style={{width: '40%', display:'inline-block'}}>
-          <h2 style={defaultStyle}>{this.props.playlists && this.props.playlists.length} Text</h2>
+          <h2 style={defaultStyle}>{this.props.playlists.length} Playlist</h2>
+        </div>
+      );
+  }
+}
+class HoursCounter extends Component {
+  render(){
+    let allSongs = this.props.playlists.reduce((songs, eachPlaylist)=> {
+        return songs.concat(eachPlaylist.songs)
+    }, [])
+    let totalDuration = allSongs.reduce((sum, eachSong) => {
+        return sum + eachSong.duration
+    }, 0)
+      return (
+        <div style={{width: '40%', display:'inline-block'}}>
+          <h2 style={defaultStyle}>{Math.round(totalDuration/60)} Hours</h2>
         </div>
       );
   }
@@ -83,8 +118,8 @@ class App extends Component {
         {this.state.serverData.user ?
     <div>
         <h1>{this.state.serverData.user.name}'s Playlists</h1>    
-        <Aggregate playlists={this.state.serverData.user.playlists}/>
-        <Aggregate/>  
+        <PlaylistCounter playlists={this.state.serverData.user.playlists}/>
+        <HoursCounter playlists={this.state.serverData.user.playlists}/>  
       <Filter/>
       <Playlist/>
       <Playlist/>
